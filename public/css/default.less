@@ -1,0 +1,413 @@
+@unselected: #aaa;
+@hover: #ccc;
+@selected: #2196F3;
+@white: #fff;
+@red: #ff2200;
+@purple: #594abf;
+@black: #1f1f1f;
+@black-trans: rgba(0,0,0,0.8);
+@dark-grey: #4f4f4f;
+@offwhite: #f1f1f1;
+
+// to counter act bootstrap stupid use of !important on everything!
+*[style*="display: none"] { display: none !important }
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    background-color: @offwhite;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.min-width-512 {
+    min-width: 512px;
+}
+
+.min-width-420 {
+    min-width: 420px;
+}
+
+.min-width-256 {
+    min-width: 256px;
+}
+
+.max-width-256 {
+    max-width: 256px;
+}
+.max-width-512 {
+    max-width: 512px;
+}
+
+//extended flex layout
+.justify-self-center {
+    justify-self: center;
+}
+.justify-self-start {
+    justify-self: start;
+}
+.justify-self-end {
+    justify-self: end;
+}
+
+// extended margin options
+.mt-60 {
+    margin-top: 2.5rem;
+}
+
+.mt-40 {
+    margin-top: 2rem;
+}
+
+.mt-20 {
+    margin-top: 1.5rem;
+}
+.mt-80 {
+    margin-top: 3.5rem;
+}
+.mt-100 {
+    margin-top: 4rem;
+}
+
+//extended typography
+.display-10 {
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 1.1;
+}
+.display-5 {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.display-6 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.word-wrap-break {
+    word-wrap: break-word;
+}
+
+.word-break {
+    word-break: break-all;
+}
+
+//extended input
+input:invalid {
+    border-color: @red;
+}
+input:valid + .invalid {
+    display: none;
+}
+input + .invalid {
+    display: none;
+}
+input:invalid + .invalid {
+    display: block;
+}
+.minvalid {
+    display: none;
+}
+
+.input-clear {
+    background: transparent;
+    border: 0;
+    outline: none;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    font-size: 12pt;
+    cursor: pointer;
+}
+
+//extend position
+.abs {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.relative {
+    position: relative;
+}
+
+.allow-scroll-y {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.overflow-y-visible {
+    overflow-y: visible;
+}
+
+.radio-create {
+    cursor: pointer;
+}
+
+.abs-tr {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.snackbar {
+    position: fixed;
+    z-index: 9999;
+    bottom: 10px;
+    right: 10px;
+    height: auto;
+    font-size: 12pt;
+    background-color: @black-trans;
+    max-width: 512px;
+
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+
+    .snackbar-content {
+        padding: 1rem;
+    }
+}
+
+//navbar shadow
+.navbar-shadow {
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+}
+
+.navbar-blur {
+    background-color: rgba(0,0,0,0.75) !important;
+}
+
+//Pweet Compose
+.pweet-compose {
+    .invalid {
+        color: @red;
+    }
+
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+
+    background: white;
+    padding: 10px;
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    z-index: 9999;
+}
+
+.pweeter {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+//Pweets
+.pweet {
+    opacity: 0;
+    background: white;
+    border-bottom: 1px solid lightgrey;
+    transition: all 0.5s ease;
+
+    margin-top: 10px;
+
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+
+    .pweet-replies {
+        .pweet {
+            margin-top: 1px !important;
+        }
+    }
+
+    .pweet-header {
+        padding: 5px;
+
+        .pweet-username {
+            padding: 5px;
+            font-weight: 600;
+            font-size: 2rem;
+        }
+        .pweet-address {
+            padding-left: 10px;
+            font-size: 0.75rem;
+            display: inline-block;
+            word-break: break-all;
+        }
+        .pweet-date {
+            padding: 5px;
+            font-size: 1rem;
+        }
+        img {
+            width: 64px;
+            height: 64px;
+            border-radius: 100%;
+            padding: 5px;
+        }
+        p {
+            margin: 0px !important;
+        }
+     }
+     .pweet-message {
+         padding: 10px;
+         font-size: 1.25rem;
+         word-break: break-all;
+
+         img {
+             width: 100% !important;
+             height: auto;
+         }
+         video {
+             width: 100% !important;
+             min-height: 128px;
+         }
+         audio {
+             width: 100% !important;
+         }
+     }
+     .pweet-options {
+        font-size: 1.125rem;
+
+         a {
+             padding: 10px;
+             color: @hover; 
+         }
+         div {
+             padding: 10px;
+             color: @hover;
+             cursor: pointer;
+         }
+         div:hover {
+             color: @dark-grey;
+         }
+         a:hover {
+             color: @dark-grey;
+         }
+     }
+}
+
+.navbar-nav {
+    flex-direction: row !important;
+}
+
+.fade-active {
+    transition: all .5s ease;
+    opacity: 1;
+    visibility: visible;
+}
+.fade-inactive {
+    transition: all .5s ease;
+    opacity: 0;
+    visibility: collapse;
+}
+
+.slide-fade-active {
+    transition: all .5s ease;
+    transform: translateX(0px);
+    opacity: 1;
+    visibility: visible;
+}
+.slide-fade-inactive {
+    transition: all .5s ease;
+    transform: translateX(-200px);
+    opacity: 0;
+    visibility: collapse;
+}
+
+.spin {
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
+.hidden-file {
+    position: fixed;
+    left: -9999px;
+    opacity: 0;
+}
+
+.display-block {
+    display: block;
+}
+
+.first-margin {
+    .first-div:not([style*="display: none;"]) {
+        margin-top: 65px !important;
+    }
+    .first-div:not([style*="display: none;"]) + .first-div {
+        margin-top: 0px !important;
+    }
+}
+
+.fixed-center {
+    position: fixed;
+    left: auto;
+    right: auto;
+    top: 45%;
+    bottom: auto;
+    width: 100%;
+    height: auto;
+}
+
+// basic spin keyframes
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
+//handle width adjustments based on screen media size
+@media screen and (max-width: 512px) {
+    .min-width-512 {
+        min-width: 0;
+        width: 100%;
+    }
+    .w-75,.w-50,.w-25 {
+        width: 100% !important;
+    }
+    // because boot strap is retarded
+    .row {
+        flex: 0 0 100%;
+    }
+    .col,.col-1,.col-2,.col-3,.col-4,.col-5,
+    .col-6,.col-7,.col-8,.col-9,.col-10,
+    .col-11,.col-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .navbar-nav {
+        li a span {
+            display: none;
+        }
+    }
+}
+
+@media screen and (max-width: 256px) {
+    .min-width-256 {
+        min-width: 0;
+        width: 100%;
+    }
+
+    // because boot strap is retarded
+    .row {
+        flex: 0 0 100%;
+    }
+    .col,.col-1,.col-2,.col-3,.col-4,.col-5,
+    .col-6,.col-7,.col-8,.col-9,.col-10,
+    .col-11,.col-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .w-75,.w-50,.w-25 {
+        width: 100% !important;
+    }
+}
