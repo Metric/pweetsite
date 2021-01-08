@@ -163,7 +163,7 @@ class MessageView extends Component {
             num = Math.round(diff / day);
         }
         else {
-            return date.toLocaleDateString();
+            return new Date(date).toLocaleString();
         }
 
         return num + formats[unit][format];
