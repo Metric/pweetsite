@@ -109,11 +109,13 @@ class SetupView extends Component {
                         ),
                         h('div', {class:'pweet-info'},
                             h('h1', {}, 'Become Part of Decentralized Microblogging'),
-                            h('h5', {}, `No Deletions, No Blocking, No Censoring, No Editing, Always Permanent`),
+                            h('h5', {}, `No Deletions, No Blocking, No Censoring, No Editing, No IP Tracking`),
+                            h('h6', {}, 'No Single Entity Control, Always Permanent, MIT Opensource'),
                             h('div', {class: 'pweet-info', style:'margin-top: 5%;'}, 
-                                h('h2', {}, 'Host a Node and Keep Pweeter Alive'),
+                                h('h2', {}, 'Host a Node or Use UI Anywhere'),
                                 h('p', {},
-                                    h('a', {href:"https://github.com/Metric/pweet"}, 'MIT Source Code'),
+                                    h('a', {href:"https://github.com/Metric/pweet", class: 'btn btn-primary p-2 m-2 w-25'}, 'Node Source'),
+                                    h('a', {href:"https://github.com/Metric/pweetsite", class: 'btn btn-secondary p-2 m-2 w-25'}, 'UI Source')
                                 ),
                             )
                         ),
