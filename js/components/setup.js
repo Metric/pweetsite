@@ -105,7 +105,7 @@ class SetupView extends Component {
         return h('div', {class: 'd-flex flex-fill mobile-column'},
                     h('div', {class:'d-flex flex-column justify-content-center align-items-center flex-fill', style: 'padding: 2rem;'},
                         h('div', {class: 'pweet-icon-circle'},
-                            h('img', {src: '/images/icon.png'})
+                            h('img', {src: 'images/icon.png'})
                         ),
                         h('div', {class:'pweet-info'},
                             h('h1', {}, 'Become Part of Decentralized Microblogging'),

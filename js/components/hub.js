@@ -50,7 +50,7 @@ class Hub extends Component {
         console.log(`username: ${this.Pweeter.username}`);
         if (location.hash.startsWith('#/embed')) {
             const split = location.hash.split('/');
-            return h(MessageEmbed, {id: split[split.length - 1]});
+            return h(MessageEmbed, {id: split[split.length - 1], Pweeter: this.Pweeter});
         }
         else if(!this.Pweeter.username || this.Pweeter.username.length === 0 || this.Pweeter.username === 'null' || !this.Pweeter.keys) {
             return h(SetupView, {Pweeter: this.Pweeter, username: this.Pweeter.username, userimage: this.Pweeter.userimage, onHandleSubmit: this.onHandleSubmit});

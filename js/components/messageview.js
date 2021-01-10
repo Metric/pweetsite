@@ -87,6 +87,10 @@ class MessageView extends Component {
     }
 
     createBodyContent(message) {
+        if (!message) {
+            return [];
+        }
+
         const items = message.split(/\s/);
         let buffer = [];
         const elements = [];
@@ -286,7 +290,9 @@ class MessageEmbed extends Component {
     }
 
     async load() {
-        this.message = await this.Pweeter.getMessage(this.id);
+        const msg = await this.Pweeter.getMessage(this.id);
+        msg.Pweeter = this.Pweeter;
+        this.message = msg;
     }
 
     componentDidMount() {
