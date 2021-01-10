@@ -7,10 +7,10 @@
             this.init();
         }
 
-        async init() {
-            this.username = localStorage.getItem('username');
-            this.userimage = localStorage.getItem('userimage');
-            this.keys = localStorage.getItem('keys');
+        init() {
+            this.username = localStorage.getItem('username') || null;
+            this.userimage = localStorage.getItem('userimage') || null;
+            this.keys = localStorage.getItem('keys') || null;
 
             if(this.keys) {
                 this.keys = JSON.parse(this.keys);
