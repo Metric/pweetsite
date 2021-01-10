@@ -2,7 +2,7 @@
 
 const INITIAL_EPOCH = new Date(2018,7,9).getTime();
 
-const MDIFF = (50 * Cuckoo.SIZE / 100);
+const MDIFF = (49 * Cuckoo.SIZE / 100);
 
 class Message {
     constructor(json) {

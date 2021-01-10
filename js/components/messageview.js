@@ -5,12 +5,20 @@ class MessageView extends Component {
         super(o,parent);
         this.onRepliesClick = this.onRepliesClick.bind(this);
         this.onMoreRepliesClick = this.onMoreRepliesClick.bind(this);
+        this.onReplyClick = this.onReplyClick.bind(this);
         this.content = null;
         this.repliesView = null;
         this.hasNext = false;
         this.page = 1;
         this.seen = {};
-        this.observe({replies: [], showReplies: false});
+        this.observe({replies: [], showReplies: false, showReply: false});
+    }
+
+    onReplyClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        this.showReply = !this.showReply;
     }
 
     sortMessages(p1, p2) {
@@ -45,26 +53,32 @@ class MessageView extends Component {
         }
     }
 
-    async onRepliesClick(e) {
+    async initReplies() {
+        if(this.replies.length === 0) {
+            try {
+                let all = this.replies;
+                const real = await this.Pweeter.replies(this.id, this.page++);
+                this.hasNext = real.length > 0; 
+
+                if(this.hasNext) {
+                    real.forEach(m => all = this.onReply(m, all));
+                    this.replies = all;
+                }
+                else {
+                    this.forceUpdate();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    }
+
+    onRepliesClick(e) {
         e.stopPropagation();
         e.preventDefault();
 
         if(!this.showReplies) {
-            if(this.replies.length === 0) {
-                try {
-                    let all = this.replies;
-                    const real = await this.Pweeter.replies(this.id, this.page++);
-                    this.hasNext = real.length > 0; 
-
-                    if(this.hasNext) {
-                        real.forEach(m => all = this.onReply(m, all));
-                        this.replies = all;
-                    }
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
             this.showReplies = true;
         }
         else {
@@ -174,17 +188,32 @@ class MessageView extends Component {
             if (this.content) {
                 this.content.classList.add('fade-active');
             }
+            this.initReplies();
         }, Math.random() * 250 + 125);
+    }
+
+    reset() {
+        this.disabled = true;
+        this.replies = [];
+        this.page = 1;
+        this.hasNext = false;
+        this.seen = {};
+        this.showReplies = false;
+        this.showReply = false;
+        this.disabled = false;
     }
 
     componentDidUpdate() {
         if(this.content) {
             this.content.classList.remove('fade-active');
 
+            this.reset();
+
             setTimeout(() => {
                 if (this.content) {
                     this.content.classList.add('fade-active');
                 }
+                this.initReplies();
             }, Math.random() * 250 + 125);
         }
     }
@@ -215,6 +244,13 @@ class MessageView extends Component {
         const blankUserIcon = h('i', {class: 'fas fa-user text-muted', style:'font-size: 46pt;'});
         const userIcon = h('img', {src:this.image});
 
+        const replyHandler = () => {
+            console.log('reply handler called');
+            this.showReply = false;
+        };
+
+        const replyCompose = this.showReply ? h(ComposeView, {compose: false, Pweeter: this.Pweeter, replyTo: this.id, oncancel: replyHandler, onsubmit: replyHandler}) : null;
+
         return h('div', {ref: f => this.content = f, style:'max-width: 512px;', class:'pweet relative ml-auto mr-auto'}, 
                         h('div', {class:'pweet-header word-wrap-break'},
                             h('div', {class:'w-100 d-flex align-items-center'},
@@ -228,13 +264,15 @@ class MessageView extends Component {
                         ),
                         h('div', {class:'pweet-message word-wrap-break'}, this.createBodyContent(this.message)),
                         h('div', {class:'d-flex flex-row pweet-options'},
-                            h('div', {onclick: this.onRepliesClick}, 
+                            h('div', {onclick: this.onRepliesClick},
+                                h('span', {style: 'font-size: 12pt; padding: 2px;'}, `${this.replies.length > 0 ? this.replies.length : ''}`), 
                                 h('i', {class:cmicon,title:'Replies'})
                             ),
-                            h('a', {href:`#/reply/${this.id}`,title:'Reply'},
-                                h('i', {class:'fas fa-reply'})
+                            h('div', {onclick: this.onReplyClick},
+                                h('i', {class:'fas fa-reply',title:'Reply'})
                             )
                         ),
+                        replyCompose,
                         h('div', {ref: f => this.repliesView = f, class:'w-100 pweet-replies', style:displayReplies}, items),
                         h('button', {class: 'w-100 btn text-primary', onclick:this.onMoreRepliesClick, style:displayMoreReplies})
                     );

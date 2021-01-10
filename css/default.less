@@ -1,18 +1,21 @@
 @unselected: #aaa;
 @hover: #ccc;
-@selected: #2196F3;
+@selected: #2196f3;
 @white: #fff;
 @red: #ff2200;
 @purple: #594abf;
 @black: #1f1f1f;
-@black-trans: rgba(0,0,0,0.8);
+@black-trans: rgba(0, 0, 0, 0.8);
 @dark-grey: #4f4f4f;
 @offwhite: #f1f1f1;
 
 // to counter act bootstrap stupid use of !important on everything!
-*[style*="display: none"] { display: none !important }
+*[style*="display: none"] {
+    display: none !important;
+}
 
-html, body {
+html,
+body {
     width: 100%;
     min-height: 100%;
     background-color: @offwhite;
@@ -165,9 +168,9 @@ input:invalid + .invalid {
     background-color: @black-trans;
     max-width: 512px;
 
-    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
 
     .snackbar-content {
         padding: 1rem;
@@ -176,13 +179,33 @@ input:invalid + .invalid {
 
 //navbar shadow
 .navbar-shadow {
-    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
 }
 
 .navbar-blur {
-    background-color: rgba(0,0,0,0.75) !important;
+    background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.pweet-icon-circle {
+    background: @selected;
+    padding: 20px;
+    border-radius: 100%;
+    overflow: hidden;
+    height: 256px;
+    width: 256px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.pweet-info {
+    padding: 0px;
+    text-align: center;
+    margin-top: 5%;
 }
 
 //Pweet Compose
@@ -191,9 +214,9 @@ input:invalid + .invalid {
         color: @red;
     }
 
-    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
 
     background: white;
     padding: 10px;
@@ -201,6 +224,20 @@ input:invalid + .invalid {
     top: 60px;
     right: 0px;
     z-index: 9999;
+}
+
+.pweet-compose-inline {
+    .invalid {
+        color: @red;
+    }
+
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+
+    background: white;
+    padding: 10px;
+    width: 100%;
 }
 
 .pweeter {
@@ -220,9 +257,9 @@ input:invalid + .invalid {
 
     margin-top: 10px;
 
-    -webkit-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    -moz-box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
-    box-shadow: 0px 10px 25px 0px rgba(0,0,0,0.25);
+    -webkit-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
 
     .pweet-replies {
         .pweet {
@@ -257,43 +294,43 @@ input:invalid + .invalid {
         p {
             margin: 0px !important;
         }
-     }
-     .pweet-message {
-         padding: 10px;
-         font-size: 1.25rem;
-         word-break: break-all;
+    }
+    .pweet-message {
+        padding: 10px;
+        font-size: 1.25rem;
+        word-break: break-all;
 
-         img {
-             width: 100% !important;
-             height: auto;
-         }
-         video {
-             width: 100% !important;
-             min-height: 128px;
-         }
-         audio {
-             width: 100% !important;
-         }
-     }
-     .pweet-options {
+        img {
+            width: 100% !important;
+            height: auto;
+        }
+        video {
+            width: 100% !important;
+            min-height: 128px;
+        }
+        audio {
+            width: 100% !important;
+        }
+    }
+    .pweet-options {
         font-size: 1.125rem;
 
-         a {
-             padding: 10px;
-             color: @hover; 
-         }
-         div {
-             padding: 10px;
-             color: @hover;
-             cursor: pointer;
-         }
-         div:hover {
-             color: @dark-grey;
-         }
-         a:hover {
-             color: @dark-grey;
-         }
-     }
+        a {
+            padding: 10px;
+            color: @hover;
+        }
+        div {
+            padding: 10px;
+            color: @hover;
+            cursor: pointer;
+        }
+        div:hover {
+            color: @dark-grey;
+        }
+        a:hover {
+            color: @dark-grey;
+        }
+    }
 }
 
 .navbar-nav {
@@ -301,33 +338,33 @@ input:invalid + .invalid {
 }
 
 .fade-active {
-    transition: all .5s ease;
+    transition: all 0.5s ease;
     opacity: 1;
     visibility: visible;
 }
 .fade-inactive {
-    transition: all .5s ease;
+    transition: all 0.5s ease;
     opacity: 0;
     visibility: collapse;
 }
 
 .slide-fade-active {
-    transition: all .5s ease;
+    transition: all 0.5s ease;
     transform: translateX(0px);
     opacity: 1;
     visibility: visible;
 }
 .slide-fade-inactive {
-    transition: all .5s ease;
+    transition: all 0.5s ease;
     transform: translateX(-200px);
     opacity: 0;
     visibility: collapse;
 }
 
 .spin {
-    -webkit-animation:spin 2s linear infinite;
-    -moz-animation:spin 2s linear infinite;
-    animation:spin 2s linear infinite;
+    -webkit-animation: spin 2s linear infinite;
+    -moz-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
 }
 
 .hidden-file {
@@ -360,26 +397,61 @@ input:invalid + .invalid {
 }
 
 // basic spin keyframes
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
 
 //handle width adjustments based on screen media size
 @media screen and (max-width: 512px) {
+    .mobile-column {
+        flex-direction: column;
+    }
     .min-width-512 {
         min-width: 0;
         width: 100%;
     }
-    .w-75,.w-50,.w-25 {
+    .min-width-256 {
+        min-width: 0;
+        width: 100%;
+    }
+    .min-width-420 {
+        min-width: 340px;
+    }
+    .w-75,
+    .w-50,
+    .w-25 {
         width: 100% !important;
     }
     // because boot strap is retarded
     .row {
         flex: 0 0 100%;
     }
-    .col,.col-1,.col-2,.col-3,.col-4,.col-5,
-    .col-6,.col-7,.col-8,.col-9,.col-10,
-    .col-11,.col-12 {
+    .col,
+    .col-1,
+    .col-2,
+    .col-3,
+    .col-4,
+    .col-5,
+    .col-6,
+    .col-7,
+    .col-8,
+    .col-9,
+    .col-10,
+    .col-11,
+    .col-12 {
         flex: 0 0 100%;
         max-width: 100%;
     }
@@ -391,23 +463,38 @@ input:invalid + .invalid {
     }
 }
 
-@media screen and (max-width: 256px) {
+@media screen and (max-width: 320px) {
     .min-width-256 {
         min-width: 0;
         width: 100%;
+    }
+    .min-width-420 {
+        min-width: 290px;
     }
 
     // because boot strap is retarded
     .row {
         flex: 0 0 100%;
     }
-    .col,.col-1,.col-2,.col-3,.col-4,.col-5,
-    .col-6,.col-7,.col-8,.col-9,.col-10,
-    .col-11,.col-12 {
+    .col,
+    .col-1,
+    .col-2,
+    .col-3,
+    .col-4,
+    .col-5,
+    .col-6,
+    .col-7,
+    .col-8,
+    .col-9,
+    .col-10,
+    .col-11,
+    .col-12 {
         flex: 0 0 100%;
         max-width: 100%;
     }
-    .w-75,.w-50,.w-25 {
+    .w-75,
+    .w-50,
+    .w-25 {
         width: 100% !important;
     }
 }

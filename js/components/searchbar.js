@@ -20,9 +20,6 @@ class SearchBar extends Component {
                 if(e.target.value[0] === '#') {
                     location.hash = `#/tag/${e.target.value.substring(1)}`;
                 }
-                else if(e.target.value[0] === '$') {
-                    location.hash = `#/post/${e.target.value.substring(1)}`;
-                }
                 else {
                     const v = e.target.value[0] === '@' ? e.target.value.substring(1) : e.target.value;
                     location.hash = `#/user/${v}`;
@@ -31,7 +28,8 @@ class SearchBar extends Component {
             else {
                 location.hash = '#/discover';
             }
-        }, 250);
+            this.forceUpdate();
+        }, 500);
     }
 
     onClear(e) {
@@ -40,12 +38,14 @@ class SearchBar extends Component {
 
         this.searchbar.value = '';
         location.hash = '#/discover';
+        this.forceUpdate();
     }
 
     render() {
+        const clearButton = this.searchbar && this.searchbar.value && this.searchbar.value.length > 0 ?  h('button', {class:'input-clear fas fa-times', onclick:this.onClear}) : null;
         return h('div', {class:'relative text-light'},
                     h('input', {type:'text', class:'form-control', ref: f => this.searchbar = f, oninput: this.onInput, placeholder:'#hashtag or @address'}),
-                    h('button', {class:'input-clear fas fa-times', onclick:this.onClear})
+                    clearButton
                 );
     }
 }

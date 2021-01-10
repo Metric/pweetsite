@@ -16,7 +16,7 @@ class Navigation extends Component {
                                 h('a', {class:'nav-link', href:this.previous},
                                     h('i', {class: 'fas fa-times'})
                                 ),
-                                h(ComposeView, {Pweeter:this.Pweeter, replyTo: replyTo, previous: this.previous})
+                                h(ComposeView, {Pweeter:this.Pweeter, replyTo: replyTo, compose: true, previous: this.previous})
                             );
         const composeHidden =  h('li', {class:'nav-item relative'},
                                     h('a', {class:'nav-link', href:'#/compose'},
@@ -34,7 +34,10 @@ class Navigation extends Component {
                         h('li', {class:this.path.startsWith('#/discover') ? 'nav-item active' : 'nav-item'},
                             h('a', {class:'nav-link', href:'#/discover'}, 'DISCOVER')
                         ),
-                        h('li', {class:'nav-item'}, 
+                        h('li', {class:this.path.startsWith(`#/user/${this.Pweeter.address}`) ? 'nav-item active': 'nav-item'},
+                            h('a', {class:'nav-link', href:`#/user/${this.Pweeter.address}`}, 'ME')
+                        ),
+                        h('li', {class:'nav-item', style: 'width: 50%;'}, 
                             h(SearchBar, {Pweeter:this.Pweeter})
                         ),
                         h('li', {class:this.path.startsWith('#/account') ? 'nav-item active' : 'nav-item'},

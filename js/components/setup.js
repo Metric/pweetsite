@@ -12,6 +12,7 @@ class SetupView extends Component {
         this.imageInput = null;
         this.pubkeyInput = null;
         this.privkeyInput = null;
+        this.observe({errorMessage: null});
     }
 
     componentDidMount() {
@@ -43,6 +44,22 @@ class SetupView extends Component {
             
             if(this.pubkeyInput.value && this.pubkeyInput.value.length > 0 
                 && this.privkeyInput.value && this.privkeyInput.value.length > 0) {
+
+                //verify keys match
+                try {
+                    const signTest = Hasher.sign(this.username, this.privkeyInput.value);
+                    if (!Hasher.verify(this.username, signTest, this.pubkeyInput.value)) {
+                        this.errorMessage = 'Bad Key Pair';
+                        return;
+                    }
+                    else {
+                        this.errorMessage = null;
+                    }
+                }
+                catch (e) {
+                    this.errorMessage = 'Bad Key Pair';
+                    return;
+                }
 
                 this.Pweeter.keys = {
                     public: this.pubkeyInput.value,
@@ -85,9 +102,23 @@ class SetupView extends Component {
                                 h('img', {src:this.userimage, width:'64', style:'border-radius: 100%;'})
                             );
 
-        return h('div', {class: 'd-flex flex-fill'},
-                    h('div', {class:'flex-fill'}),
-                    h('div', {class:'flex-fill d-flex justify-content-center bg-light p-2'}, 
+        return h('div', {class: 'd-flex flex-fill mobile-column'},
+                    h('div', {class:'d-flex flex-column justify-content-center align-items-center flex-fill', style: 'padding: 2rem;'},
+                        h('div', {class: 'pweet-icon-circle'},
+                            h('img', {src: '/images/icon.png'})
+                        ),
+                        h('div', {class:'pweet-info'},
+                            h('h1', {}, 'Become Part of Decentralized Microblogging'),
+                            h('h5', {}, `No Deletions, No Blocking, No Censoring, No Editing, Always Permanent`),
+                            h('div', {class: 'pweet-info', style:'margin-top: 5%;'}, 
+                                h('h2', {}, 'Host a Node and Keep Pweeter Alive'),
+                                h('p', {},
+                                    h('a', {href:"https://github.com/Metric/pweet"}, 'MIT Source Code'),
+                                ),
+                            )
+                        ),
+                    ),
+                    h('div', {class:'flex-fill d-flex justify-content-center bg-light', style: 'padding: 2rem;'}, 
                         h('form', {ref: f => this.form = f, class:'min-width-256 d-flex flex-column align-self-center', id:'setupForm', novalidate:'true'},
                             h('div', {class:'form-group text-center'},
                                 this.userimage ? userIcon : blankUserIcon,
@@ -106,6 +137,7 @@ class SetupView extends Component {
                                 h('input', {class:'form-control', type:'text', ref: f => this.pubkeyInput = f, placeholder:'public key'}),
                                 h('label', {class:'text-muted w-100'}, 'Private Key'),
                                 h('input', {class:'form-control', type:'text', ref: f => this.privkeyInput = f, placeholder:'private key'}),
+                                h('div', {class: 'w-100', style:'color: red; font-size: 12pt;'}, this.errorMessage ? this.errorMessage : ''),
                                 h('small', {class:'text-muted'}, 'If you do not provide a key pair, one will automatically be generated')
                             ),
                             h('div', {class:'form-group'},

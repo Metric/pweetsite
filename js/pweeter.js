@@ -7,18 +7,37 @@
             this.init();
         }
 
-        init() {
+        async init() {
             this.username = localStorage.getItem('username');
             this.userimage = localStorage.getItem('userimage');
             this.keys = localStorage.getItem('keys');
 
             if(this.keys) {
                 this.keys = JSON.parse(this.keys);
+                this.address = this.keys.public;
             }
             else {
                 this.keys = Hasher.keypair();
+                this.address = this.keys.public;
                 this.save();
             }
+        }
+
+        async initNodes() {
+            if (this.nodes) {
+                return;
+            } 
+
+            this.nodes = JSON.parse(await Request.get('https://raw.githubusercontent.com/Metric/pweet/master/peers.json')) || [];
+
+            //for testing insert local
+            this.nodes.push('http://127.0.0.1:8000/');
+        }
+
+        randomNode() {
+            let i = 0;
+            i = Math.round(Math.random() * (this.nodes.length - 1));
+            return this.nodes[i].replace(/\/$/, '');
         }
 
         send(message, replyTo) {
@@ -29,6 +48,13 @@
                 name: this.username,
                 replyTo: replyTo || ''
             });
+
+            //validate public and private keys work together
+            const signTest = Hasher.sign(this.username, this.keys.private);
+            if (!Hasher.verify(this.username, signTest, this.keys.public)) {
+                console.log('public private key mismatch');
+                return;
+            }
 
             this.emit('send');
 
@@ -45,7 +71,8 @@
     
                 //send to server
                 try {
-                    const valid = await Request.post('http://127.0.0.1:8000/message', msg);
+                    await this.initNodes();
+                    const valid = await Request.post(`${this.randomNode()}/message`, msg);
                     if(valid !== 'OK') {
                         //show error
                         console.log('message denied');
@@ -62,20 +89,22 @@
         }
 
         async replies(id, page) {
-            const msgs = await Request.get('http://127.0.0.1:8000/search/replies/' + id + '/page/' + page);
+            await this.initNodes();
+            const msgs = await Request.get(`${this.randomNode()}/search/replies/${id}/page/${page}`);
             msgs.forEach(m => m.Pweeter = this);
             return msgs;
         }
 
         async search(text, page) {
+            await this.initNodes();
             if(text[0] === '#') {
                 text = text.substring(1);
-                const msgs = await Request.get('http://127.0.0.1:8000/search/tag/' + text + '/page/' + page);
+                const msgs = await Request.get(`${this.randomNode()}/search/tag/${text}/page/${page}`);
                 msgs.forEach(m => m.Pweeter = this);
                 return msgs;
             }
             else {
-                const msgs = await Request.get('http://127.0.0.1:8000/search/address/' + text + '/page/' + page);
+                const msgs = await Request.get(`${this.randomNode()}/search/address/${text}/page/${page}`);
                 msgs.forEach(m => m.Pweeter = this);
                 return msgs;
             }
@@ -84,7 +113,9 @@
         latest() {
             return new Promise(async (res, rej) => {
                 try {
-                    this.last = await Request.get('http://127.0.0.1:8000/last');
+                    await this.initNodes();
+
+                    this.last = await Request.get(`${this.randomNode()}/last`);
                     this.last.messages.forEach(m => m.Pweeter = this);
 
                     res(this.last.messages);
@@ -97,6 +128,7 @@
         }
 
         save() {
+            this.address = this.keys.public;
             localStorage.setItem('username', this.username);
             localStorage.setItem('userimage', this.userimage);
             localStorage.setItem('keys', JSON.stringify(this.keys));

@@ -77,11 +77,11 @@ class AccountView extends Component {
                             h('div', {class:'form-group max-width-512'},
                                 h('label', {class:'text text-danger w-100'}, 'Private Key (do not share this with others!)'),
                                 h('p', {class: 'mt-1 bg-danger text-white p-4 word-break'}, this.privkey),
-                                h('small', {class: 'text-muted'}, 'Once someone knows your private key, you are a screwed!')
+                                h('small', {class: 'text-muted'}, 'Once someone knows your private key, you are screwed!')
                             ),
                             h('div', {class:'form-group max-width-512 text-center'},
                                 h('a', {class:'p-2 display-block w-100', href:'#/signout'}, 'Sign out'),
-                                h('small', {class: 'display-block text-muted'}, 'Signing out will remove your keys, your username and your icon from local storage.'),
+                                h('small', {class: 'display-block text-muted'}, 'Signing out will remove your keys from local storage.'),
                                 h('small', {class: 'display-block text-muted'}, 'Be sure your keys are backed up first!')
                             )
                         )

@@ -7,12 +7,22 @@ class Hub extends Component {
         this.prevList = LiveView;
         this.onHandleSubmit = this.onHandleSubmit.bind(this);
         this.onHashChange = this.onHashChange.bind(this);
+        this.sendCount = 0;
 
         this.Pweeter.on('send', () => {
-            this.alert = 'Sending message, this may take a bit...'
+            this.sendCount++;
+            this.alert = `Sending messages (${this.sendCount}), this may take a bit...`;
         });
         this.Pweeter.on('sendComplete', () => {
-            this.alert = '';
+            this.sendCount--;
+
+            if (this.sendCount <= 0) {
+                this.sendCount = 0;
+                this.alert = '';
+            }
+            else {
+                this.alert = `Sending messages (${this.sendCount}), this may take a bit...`;
+            }
         });
     }
 
@@ -38,8 +48,8 @@ class Hub extends Component {
 
     render() {
         console.log(`username: ${this.Pweeter.username}`);
-        if(!this.Pweeter.username || this.Pweeter.username.length === 0 || this.Pweeter.username === 'null') {
-            return h(SetupView, {Pweeter: this.Pweeter, onHandleSubmit: this.onHandleSubmit});
+        if(!this.Pweeter.username || this.Pweeter.username.length === 0 || this.Pweeter.username === 'null' || !this.Pweeter.keys) {
+            return h(SetupView, {Pweeter: this.Pweeter, username: this.Pweeter.username, userimage: this.Pweeter.userimage, onHandleSubmit: this.onHandleSubmit});
         }
         else {
             let listView = null;
@@ -53,12 +63,10 @@ class Hub extends Component {
                 listView = AccountView;
             }
             else if(location.hash.startsWith('#/signout')) {
-                this.Pweeter.username = '';
-                this.Pweeter.userimage = '';
                 this.Pweeter.keys = '';
                 this.Pweeter.save();
 
-                return h(SetupView, {Pweeter: this.Pweeter, onHandleSubmit: this.onHandleSubmit});
+                return h(SetupView, {Pweeter: this.Pweeter, username: this.Pweeter.username, userimage: this.Pweeter.userimage, onHandleSubmit: this.onHandleSubmit});
             }
             else {
                 listView = this.prevList;

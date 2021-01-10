@@ -5,6 +5,7 @@ class ComposeView extends Component {
         super(o, parent);
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.onCancel = this.onCancel.bind(this);
         this.onInput = this.onInput.bind(this);
         this.onKeyPress = this.onKeyPress.bind(this);
         this.message = '';
@@ -33,7 +34,12 @@ class ComposeView extends Component {
             setTimeout(() => {
                 this.Pweeter.send(this.message, this.replyTo || '');
                 this.textarea.value = '';
-                location.hash = this.previous || '#/discover';
+                if (this.compose) {
+                    location.hash = this.previous || '#/discover';
+                }
+                else if (this.onsubmit) {
+                    this.onsubmit();
+                }
             }, 10);
         }
     }
@@ -48,11 +54,16 @@ class ComposeView extends Component {
         e.preventDefault();
         e.stopPropagation();
 
-        location.hash = this.previous || '#/discover';
+        if (this.compose) {
+            location.hash = this.previous || '#/discover';
+        }
+        else if (this.oncancel) {
+            this.oncancel();
+        }
     }
 
     render() {
-        return h('div', {class:'pweet-compose min-width-420 text-right'}, 
+        return h('div', {class:`${this.compose ? 'pweet-compose min-width-420' : 'pweet-compose-inline'} text-right`}, 
                     h('textarea', {class:'form-control w-100', placeholder:'keep your message short and sweet...', ref: f => this.textarea = f, maxlength:Utils.MAX_LENGTH, value: this.message, oninput:this.onInput, onkeydown:this.onKeyPress}),
                     h('p', {class: this.messageLength > Utils.MAX_LENGTH ? 'invalid text-right' : 'text-right'}, `${this.messageLength} / ${Utils.MAX_LENGTH}`),
                     h('button', {class:'btn text-primary', onclick:this.onCancel}, 'CANCEL'),

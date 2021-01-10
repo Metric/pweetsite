@@ -10,6 +10,7 @@ class SearchView extends Component {
         this.seen = {};
         this.text = '';
         this.page = 1;
+        
         this.observe({messages: []});
     }
 
@@ -75,11 +76,13 @@ class SearchView extends Component {
     }
 
     componentDidMount() {
+        this.Pweeter.on('sendComplete', this.onHashChange);
         this.onHashChange();
         window.addEventListener('hashchange', this.onHashChange, false);
     }
 
     componentWillUnmount() {
+        this.Pweeter.remove('sendComplete', this.onHashChange);
         window.removeEventListener('hashchange', this.onHashChange, false);
     }
 

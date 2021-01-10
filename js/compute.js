@@ -18,7 +18,7 @@ class Compute {
     solve() {
         setTimeout(() => {
             this.run();
-        }, 1000);
+        }, 10);
     }
 
     run() {
