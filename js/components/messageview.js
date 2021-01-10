@@ -279,6 +279,25 @@ class MessageView extends Component {
     }
 }
 
+class MessageEmbed extends Component {
+    constructor(o, parent) {
+        super(o, parent);
+        this.observe({message: null});
+    }
+
+    async load() {
+        this.message = await this.Pweeter.getMessage(this.id);
+    }
+
+    componentDidMount() {
+        this.load();
+    }
+
+    render() {
+        return h(MessageView, this.message);
+    }
+}
+
 class MessageList extends Component {
     constructor(o, parent) {
         super(o, parent);

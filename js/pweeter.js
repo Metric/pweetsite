@@ -95,6 +95,12 @@
             return msgs;
         }
 
+        async getMessage(id) {
+            await this.initNodes();
+            const msg = await Request.get(`${this.randomNode()}/message/${id}`);
+            return new Message(msg);
+        }
+
         async search(text, page) {
             await this.initNodes();
             if(text[0] === '#') {
