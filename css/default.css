@@ -265,6 +265,16 @@ input:invalid + .invalid {
 .pweet .pweet-options a:hover {
   color: #4f4f4f;
 }
+.pweet-quote-embed {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  border-top: 1px solid lightgray;
+  background: #f1f1f1;
+}
+.pweet-quote-embed .pweet-options {
+  display: none !important;
+}
 .navbar-nav {
   flex-direction: row !important;
 }

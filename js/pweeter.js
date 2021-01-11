@@ -58,79 +58,154 @@
 
             this.emit('send');
 
-            const worker = new Worker('/js/compute.js');
+            // if accessing from a file:  do not use worker
+            if (location.protocol.indexOf('file') > -1) {
+                const c = new Compute(msg, async () => {
+                    msg.sign(this.keys.private);
+                    await this.sendMessageToNode(msg);
+                });
+                c.solve(10); //a little longer wait time per try
+                return;
+            }
+
+            const worker = new Worker('/js/worker.js');
             worker.onmessage = async (d) => {
                 msg = new Message(d.data);
                 msg.sign(this.keys.private);
-
-                if(!msg.isValid()) {
-                    //show error
-                    console.log('message invalid');
-                    return;
-                }
-    
-                //send to server
-                try {
-                    await this.initNodes();
-                    const valid = await Request.post(`${this.randomNode()}/message`, msg);
-                    if(valid !== 'OK') {
-                        //show error
-                        console.log('message denied');
-                    }
-                }
-                catch (e) {
-                    //show error
-                    console.log(e);
-                }
-
-                this.emit('sendComplete');
+                await this.sendMessageToNode(msg);
             };
             worker.postMessage(msg);
         }
 
+        async sendMessageToNode(msg) {
+            if(!msg.isValid()) {
+                //show error
+                console.log('message invalid');
+                this.emit('sendFailed');
+                this.emit('sendComplete');
+                return;
+            }
+
+            let valid = 'BAD';
+            let tries = 0;
+            await this.initNodes();
+            while(valid !== 'OK' && tries++ < 5) {
+                try {
+                    valid = await Request.post(`${this.randomNode()}/message`, msg);
+                }
+                catch (e) {
+                    valid = 'BAD';
+                    console.log(e);
+                }
+            }
+
+            if (tries >= 5 && valid === 'BAD') {
+                console.log('message denied');
+                this.emit('sendFailed');
+            }
+            
+            this.emit('sendComplete');
+        }
+
         async replies(id, page) {
             await this.initNodes();
-            const msgs = await Request.get(`${this.randomNode()}/search/replies/${id}/page/${page}`);
+            let msgs = null;
+            let tries = 0;
+
+            while(msgs === null && tries++ < 5) {
+                try {
+                    msgs = await Request.get(`${this.randomNode()}/search/replies/${id}/page/${page}`);
+                }
+                catch (e) {
+                    msgs = null;
+                    console.log(e);
+                }
+            }
+
+            msgs = msgs || [];
             msgs.forEach(m => m.Pweeter = this);
             return msgs;
         }
 
         async getMessage(id) {
             await this.initNodes();
-            const msg = await Request.get(`${this.randomNode()}/message/${id}`);
-            return new Message(msg);
+            let msg = null;
+            let tries = 0;
+
+            while (msg === null && tries++ < 5) 
+            {
+                try {
+                    msg = await Request.get(`${this.randomNode()}/message/${id}`);
+                    msg = msg || {};
+                    msg.Pweeter = this;
+                }
+                catch (e) {
+                    console.log(e);
+                    msg = null;
+                }
+            }
+
+            return msg;
         }
 
         async search(text, page) {
             await this.initNodes();
+            let msgs = null;
+            let tries = 0;
+
             if(text[0] === '#') {
                 text = text.substring(1);
-                const msgs = await Request.get(`${this.randomNode()}/search/tag/${text}/page/${page}`);
-                msgs.forEach(m => m.Pweeter = this);
-                return msgs;
+                while (msgs === null && tries++ < 5) 
+                {
+                    try {
+                        msgs = await Request.get(`${this.randomNode()}/search/tag/${text}/page/${page}`);
+                    }
+                    catch (e) {
+                        console.log(e);
+                        msgs = null;
+                    }
+                }
             }
             else {
-                const msgs = await Request.get(`${this.randomNode()}/search/address/${text}/page/${page}`);
-                msgs.forEach(m => m.Pweeter = this);
-                return msgs;
+                while (msgs === null && tries++ < 5) 
+                {
+                    try {
+                        msgs = await Request.get(`${this.randomNode()}/search/address/${text}/page/${page}`);
+                    }
+                    catch (e) {
+                        console.log(e);
+                        msgs = null;
+                    }
+                }
             }
+
+            msgs = msgs || [];
+            msgs.forEach(m => m.Pweeter = this);
+            return msgs;
         }
 
-        latest() {
-            return new Promise(async (res, rej) => {
+        async latest() {
+            await this.initNodes();
+
+            this.last = null;
+            let tries = 0;
+
+            while(this.last === null && tries++ < 5)
+            {
                 try {
-                    await this.initNodes();
-
                     this.last = await Request.get(`${this.randomNode()}/last`);
-                    this.last.messages.forEach(m => m.Pweeter = this);
-
-                    res(this.last.messages);
                 }
                 catch (e) {
                     console.log(e);
-                    res([]);
+                    this.last = null;
                 }
-            });
+            }
+
+            this.last = this.last || {messages: []};
+            this.last.messages = this.last.messages || [];
+            this.last.messages.forEach(m => m.Pweeter = this);
+
+            return this.last.messages;
         }
 
         save() {
