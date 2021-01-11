@@ -2,19 +2,21 @@ Pweet Site / UI
 =====================
 This is the basic Pweet Site / UI code. Looking for feedback on what others would like to see as part of it. 
 
-It is not finished yet, as the initial sign in / registration, still needs some graphics etc. As that is pretty blank still.
+It is not finished yet.
 
 Browser Requirements
 =======================
 * Must be ES6 compatible with async capabilities.
-* Web workers are required
+* Require Worker API (If hosted on a real server URL)
 * Requires Window.crypto 
 
 Basically, most modern browsers e.g. Chrome, Firefox, Safari, Edge, Opera, iOS Safari, and most default Android Browsers on Android 6+.
 
-Changes to Make it Work with a Real Server
+It will no longer use a worker if index.html is loaded from file://
+
+Changes to Make it Work with Private Pweeter Nodes
 ==========================================
-You will need to go into pweeter.js and change any of the Request.get / Request.post to the specified Pweet Node URL. Right now they are set to http://127.0.0.1:8000/ in order to work on localhost in chrome / firefox.
+You will need to go into pweeter.js and in the initNodes() method, assign an array to this.nodes with your node urls. Otherwise, it will try and pull from the peers.json list on the Pweeter repo from github.
 
 Looking for the Pweet Blockchain Node?
 ==============================
