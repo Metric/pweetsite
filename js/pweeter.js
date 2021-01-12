@@ -12,14 +12,14 @@
             this.userimage = localStorage.getItem('userimage') || '';
             this.keys = localStorage.getItem('keys') || '';
 
-            if(this.keys) {
-                this.keys = JSON.parse(this.keys);
-                this.address = this.keys.public;
+            try {
+                if(this.keys) {
+                    this.keys = JSON.parse(this.keys);
+                    this.address = this.keys.public;
+                }
             }
-            else {
-                this.keys = Hasher.keypair();
-                this.address = this.keys.public;
-                this.save();
+            catch (e) {
+                console.log(e);
             }
         }
 
@@ -52,7 +52,7 @@
             //validate public and private keys work together
             const signTest = Hasher.sign(this.username, this.keys.private);
             if (!Hasher.verify(this.username, signTest, this.keys.public)) {
-                console.log('public private key mismatch');
+                console.log('Bad Key Pair');
                 return;
             }
 
@@ -206,6 +206,10 @@
             this.last.messages.forEach(m => m.Pweeter = this);
 
             return this.last.messages;
+        }
+
+        genKeys() {
+            this.keys = Hasher.keypair();
         }
 
         save() {

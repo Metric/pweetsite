@@ -66,6 +66,9 @@ class SetupView extends Component {
                     private: this.privkeyInput.value
                 };
             }
+            else {
+                this.Pweeter.genKeys();
+            }
 
             this.Pweeter.save();
 

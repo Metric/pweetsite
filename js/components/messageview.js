@@ -274,11 +274,11 @@ class MessageView extends Component {
             this.showReply = false;
         };
 
-        const replyCompose = this.showReply && this.Pweeter && this.Pweeter.keys && this.id ? 
+        const replyCompose = this.showReply && this.Pweeter && this.Pweeter.keys && this.Pweeter.keys.public && this.Pweeter.keys.private && this.id ? 
                             h(ComposeView, {compose: false, Pweeter: this.Pweeter, replyTo: this.id, oncancel: replyHandler, onsubmit: replyHandler}) 
                             : null;
 
-        const replyButton =  this.Pweeter && this.Pweeter.keys && this.id ? 
+        const replyButton =  this.Pweeter && this.Pweeter.keys && this.Pweeter.keys.public && this.Pweeter.keys.private && this.id ? 
                             h('div', {onclick: this.onReplyClick},
                                 h('i', {class:'fas fa-reply',title:'Reply'})
                             ) 
