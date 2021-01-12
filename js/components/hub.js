@@ -23,6 +23,11 @@ class Hub extends Component {
             else {
                 this.alert = `Sending messages (${this.sendCount}), this may take a bit...`;
             }
+
+            if (location.hash.startsWith('#/embed') 
+                && this.sendCount <= 0) {
+                    location.reload();
+            }
         });
     }
 
@@ -50,7 +55,14 @@ class Hub extends Component {
         console.log(`username: ${this.Pweeter.username}`);
         if (location.hash.startsWith('#/embed')) {
             const split = location.hash.split('/');
-            return h(MessageEmbed, {id: split[split.length - 1], Pweeter: this.Pweeter});
+            return h('div', {class: 'flex-fill d-flex flex-column'},
+                h(MessageEmbed, {id: split[split.length - 1], Pweeter: this.Pweeter}),
+                h('div', {class:'snackbar text-white', style: {
+                    display: this.alert && this.alert.length > 0 ? 'block' : 'none'
+                }}, 
+                    h('div', {class: 'snackbar-content'}, this.alert)
+                )
+            );
         }
         else if(!this.Pweeter.username || this.Pweeter.username.length === 0 || this.Pweeter.username === 'null' || !this.Pweeter.keys) {
             return h(SetupView, {Pweeter: this.Pweeter, username: this.Pweeter.username, userimage: this.Pweeter.userimage, onHandleSubmit: this.onHandleSubmit});
