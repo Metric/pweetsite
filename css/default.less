@@ -261,9 +261,17 @@ input:invalid + .invalid {
     -moz-box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
     box-shadow: 0px 10px 25px 0px rgba(0, 0, 0, 0.25);
 
+    .pweet-date {
+        padding: 0px 10px 10px 10px;
+        font-size: 1rem;
+    }
+
     .pweet-replies {
         .pweet {
             margin-top: 1px !important;
+        }
+        .pweet:last-child {
+            margin-bottom: 0px !important;
         }
     }
 
@@ -271,19 +279,15 @@ input:invalid + .invalid {
         padding: 5px;
 
         .pweet-username {
-            padding: 5px;
+            padding: 0px 5px 0px 5px;
             font-weight: 600;
-            font-size: 2rem;
+            font-size: 1.5rem;
         }
         .pweet-address {
-            padding-left: 10px;
+            padding: 0px 5px 0px 5px;
             font-size: 0.75rem;
             display: inline-block;
             word-break: break-all;
-        }
-        .pweet-date {
-            padding: 5px;
-            font-size: 1rem;
         }
         img {
             width: 64px;
@@ -312,15 +316,21 @@ input:invalid + .invalid {
             width: 100% !important;
         }
     }
+    .pweet-embed {
+        padding: 10px;
+        font-size: 1rem;
+    }
     .pweet-options {
         font-size: 1.125rem;
 
+        border-top: 1px solid lightgray;
+
         a {
-            padding: 10px;
+            padding: 5px 10px;
             color: @hover;
         }
         div {
-            padding: 10px;
+            padding: 5px 10px;
             color: @hover;
             cursor: pointer;
         }
@@ -329,6 +339,18 @@ input:invalid + .invalid {
         }
         a:hover {
             color: @dark-grey;
+        }
+    }
+}
+
+.pweet:last-child {
+    margin-bottom: 10px;
+}
+
+.pweet {
+    .pweet-replies {
+        .pweet:last-child {
+            margin-bottom: 0px;
         }
     }
 }
@@ -344,6 +366,11 @@ input:invalid + .invalid {
     .pweet-options {
         display: none !important;
     }
+}
+
+.pweet-embedded {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .navbar-nav {

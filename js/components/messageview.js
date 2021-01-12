@@ -4,6 +4,7 @@ class MessageView extends Component {
     constructor(o, parent) {
         super(o,parent);
         this.onRepliesClick = this.onRepliesClick.bind(this);
+        this.onEmbedClick = this.onEmbedClick.bind(this);
         this.onMoreRepliesClick = this.onMoreRepliesClick.bind(this);
         this.onReplyClick = this.onReplyClick.bind(this);
         this.content = null;
@@ -11,7 +12,7 @@ class MessageView extends Component {
         this.hasNext = false;
         this.page = 1;
         this.seen = {};
-        this.observe({replies: [], replyToEmbed: null, showReplies: false, showReply: false});
+        this.observe({replies: [], showEmbed: false, replyToEmbed: null, showReplies: false, showReply: false});
     }
 
     onReplyClick(e) {
@@ -86,16 +87,19 @@ class MessageView extends Component {
         }
     }
 
+    onEmbedClick(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        this.showEmbed = !this.showEmbed;
+        console.log('show embed toggle');
+    }
+
     onRepliesClick(e) {
         e.stopPropagation();
         e.preventDefault();
 
-        if(!this.showReplies) {
-            this.showReplies = true;
-        }
-        else {
-            this.showReplies = false;
-        }
+        this.showReplies = !this.showReplies;
     }
 
     createBodyContent(message) {
@@ -197,7 +201,7 @@ class MessageView extends Component {
             num = Math.round(diff / day);
         }
         else {
-            return new Date(date).toLocaleString();
+            return new Date(date).toLocaleString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' });
         }
 
         return num + formats[unit][format];
@@ -282,26 +286,40 @@ class MessageView extends Component {
 
         const replyToEmbed = this.replyToEmbed;
 
-        return h('div', {ref: f => this.content = f, style:'max-width: 512px;', class:'pweet relative ml-auto mr-auto' + (this.isQuoted ? ' pweet-quote-embed' : '')}, 
+        const embedCode = this.id ? `<iframe src="https://www.pweeter.com/#/embed/${this.id}" height="${replyToEmbed ? '512' : '256'}" width="512"></iframe>` : '';
+        const embedArea = this.showEmbed ? h('div', {class: 'pweet-embed'},
+                                                h('textarea', {class: 'w-100', onclick: (e) => {
+                                                    e.target.select();
+                                                    e.target.setSelectionRange(0, 99999);
+                                                }}, embedCode)
+                                            )
+                                            : null;
+
+        return h('div', {ref: f => this.content = f, style:'max-width: 512px;', class:'pweet relative ml-auto mr-auto' + 
+                        (this.isQuoted ? ' pweet-quote-embed' : '') + (this.isEmbedded ? ' pweet-embedded' : '')}, 
                         h('div', {class:'pweet-header word-wrap-break'},
                             h('div', {class:'w-100 d-flex align-items-center'},
                                 this.image ? userIcon : blankUserIcon, //h('img', {src: this.image}),
-                                h('span', {class:'pweet-username'}, (this.name || '')),
-                                h('span', {class:'pweet-date'}, this.dateFormat(this.date, 'short')),
+                                h('div', {class: 'd-flex justify-content-center word-wrap-break flex-column'},
+                                    h('span', {class:'pweet-username'}, (this.name || '')),    
+                                    h('a', {class:'pweet-address txt-primary', href:`#/user/${this.address || ''}`}, '@' + (this.address || ''))
+                                )
                             ),
-                            h('p', {class:'word-wrap-break'},
-                                h('a', {class:'pweet-address txt-primary', href:`#/user/${this.address || ''}`}, '@' + (this.address || ''))
-                            )
                         ),
                         replyToEmbed,
                         h('div', {class:'pweet-message word-wrap-break'}, this.createBodyContent(this.message)),
+                        h('div', {class:'pweet-date text-secondary'}, this.dateFormat(this.date, 'short')),
                         h('div', {class:'d-flex flex-row pweet-options'},
-                            h('div', {onclick: this.onRepliesClick},
-                                h('span', {style: 'font-size: 12pt; padding: 2px;'}, `${this.replies.length > 0 ? this.replies.length : ''}`), 
-                                h('i', {class:cmicon,title:'Replies'})
+                            h('div', {class: 'd-flex justify-content-center align-items-center', onclick: this.onRepliesClick},
+                                h('i', {class:cmicon,title:'Replies'}),
+                                this.replies.length && !this.showReplies ? h('span', {style: 'font-size: 12pt; padding: 0px 0px 0px 5px;'}, this.replies.length) : null, 
                             ),
                             replyButton,
+                            h('div', {onclick: this.onEmbedClick},
+                                h('i', {class: 'fas fa-code', title:'Embed'})
+                            )
                         ),
+                        embedArea,
                         replyCompose,
                         h('div', {ref: f => this.repliesView = f, class:'w-100 pweet-replies', style:displayReplies}, items),
                         h('button', {class: 'w-100 btn text-primary', onclick:this.onMoreRepliesClick, style:displayMoreReplies})
@@ -322,6 +340,7 @@ class MessageEmbed extends Component {
         }
 
         const msg = await this.Pweeter.getMessage(this.id);
+        msg.isEmbedded = true;
         this.message = msg;
     }
 
