@@ -4,9 +4,13 @@
 html,
 body {
   width: 100%;
-  min-height: 100%;
-  height: 100%;
   background-color: #f1f1f1;
+}
+.normal-body {
+  height: 100%;
+}
+.body-embedded {
+  height: auto !important;
 }
 .pointer {
   cursor: pointer;
@@ -287,8 +291,8 @@ input:invalid + .invalid {
   display: none !important;
 }
 .pweet-embedded {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 .navbar-nav {
   flex-direction: row !important;

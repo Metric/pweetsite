@@ -17,9 +17,15 @@
 html,
 body {
     width: 100%;
-    min-height: 100%;
-    height: 100%;
     background-color: @offwhite;
+}
+
+.normal-body {
+    height: 100%;
+}
+
+.body-embedded {
+    height: auto !important;
 }
 
 .pointer {
@@ -366,8 +372,8 @@ input:invalid + .invalid {
 }
 
 .pweet-embedded {
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
 }
 
 .navbar-nav {

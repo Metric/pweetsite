@@ -342,6 +342,9 @@ class MessageEmbed extends Component {
         const msg = await this.Pweeter.getMessage(this.id);
         msg.isEmbedded = true;
         this.message = msg;
+
+        document.body.classList.add('body-embedded');
+        document.documentElement.classList.add('body-embedded');
     }
 
     componentDidMount() {
