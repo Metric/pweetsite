@@ -12,7 +12,7 @@ class Message {
         this.name = json.name ? striptags(json.name) : '';
         this.address = json.address ? striptags(json.address) : '';
         this.message = json.message ? striptags(json.message) : '';
-        this.date = json.date ? parseFloat(json.date) : Date.now();
+        this.date = json.date ? Number(json.date) : Date.now();
         this.replyTo = json.replyTo ? striptags(json.replyTo) : '';
 
         this.signature = json.signature ? striptags(json.signature) : '';
